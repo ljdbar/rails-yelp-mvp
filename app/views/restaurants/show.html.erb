@@ -5,14 +5,22 @@
 <h3>Current Reviews</h3>
 <ul>
   <% @restaurant.reviews.each do |r| %>
-    <li><%= r.content %>
-    <% r.rating %> </li>
+    <li><%= r.content %> -
+    <%= '⭐️' * r.rating %> - <%= link_to 'Delete', review_path(r),
+    data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}  %> </li>
   <% end %>
 </ul>
-<%= link_to "Write Review",  new_restaurant_review_path(@restaurant) %>
+<%# <%= link_to "Write Review",  new_restaurant_review_path(@restaurant) %>
+
+<br>
+<%= simple_form_for [@restaurant, @review] do |f| %>
+  <%= f.input :content %>
+  <%= f.input :rating, collection: 0..5 %>
+  <%= f.submit "Submit review", class: "btn btn-primary" %>
+<% end %>
 <br>
 <br>
-<%= link_to "-------- back to list --------", restaurants_path %>
+<%= link_to "🔙 to list", restaurants_path %>
 
 
 <%# <%= link_to "edit this restaurant", edit_restuarant_path(@restaurant) %>
